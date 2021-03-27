@@ -30,6 +30,9 @@ export const counterSlice = createSlice({
     multiplyByAmount: (state, action: PayloadAction<number>) => {
       state.value *= action.payload;
     },
+    decrementByAmount: (state, action: PayloadAction<number>) => {
+      state.value -= action.payload;
+    },
   },
 });
 
@@ -38,7 +41,14 @@ export const {
   decrement,
   incrementByAmount,
   multiplyByAmount,
+  decrementByAmount,
 } = counterSlice.actions;
+
+export const decrementAsync = (amount: number): AppThunk => (dispatch) => {
+  setTimeout(() => {
+    dispatch(decrementByAmount(amount));
+  }, 1000);
+};
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
