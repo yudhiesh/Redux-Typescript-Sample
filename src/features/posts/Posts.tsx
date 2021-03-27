@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { Link } from "react-router-dom";
 import { InitialState } from "./postsSlice";
 
 export const PostsList = () => {
@@ -18,6 +19,7 @@ export const PostsList = () => {
       <Card.Body>
         <Card.Title>{post.title}</Card.Title>
         <Card.Text>{post.content}</Card.Text>
+        <Link to={`/posts/${post.id}`}>View Post</Link>
       </Card.Body>
     </Card>
   ));

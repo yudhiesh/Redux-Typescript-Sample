@@ -7,6 +7,7 @@ import { AddPostForm } from "./features/posts/AddPostForm";
 import "./App.css";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Post } from "./features/posts/Post";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         </Navbar>
         <Switch>
           <Route exact path="/" component={Counter} />
+          <Route path="/posts/:postID" component={Post} />
           <Route path="/posts" component={PostsList} />
           <Route path="/addposts" component={AddPostForm} />
         </Switch>
