@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { postAdd } from "./postsSlice";
@@ -13,9 +14,9 @@ export const AddPostForm = () => {
   const onContentChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
     setContent(e.target.value);
 
-  const handleOnSubmit = () => {
-    console.log("Submit Form");
+  const handleOnSubmit = (e: React.FormEvent) => {
     if (title && content) {
+      e.preventDefault();
       dispatch(
         postAdd({
           id: nanoid(),
@@ -31,29 +32,30 @@ export const AddPostForm = () => {
   return (
     <div>
       <h1>Add Post</h1>
-      <section>
-        <form>
-          <label htmlFor="postTitle">Post Title:</label>
-          <input
-            type="text"
-            id="postTitle"
-            name="postTitle"
+      <Form onSubmit={handleOnSubmit}>
+        <Form.Group>
+          <Form.Label>Title</Form.Label>
+          <Form.Control
             value={title}
+            type="text"
+            placeholder="Enter Title"
             onChange={onTitleChanged}
           />
-          <label htmlFor="postContent">Content:</label>
-          <input
-            type="text"
-            id="postContent"
-            name="postContent"
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Label>Content</Form.Label>
+          <Form.Control
             value={content}
+            type="text"
+            placeholder="Enter Content"
             onChange={onContentChanged}
           />
-          <button type="button" onClick={handleOnSubmit}>
-            Save Post
-          </button>
-        </form>
-      </section>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
     </div>
   );
 };
