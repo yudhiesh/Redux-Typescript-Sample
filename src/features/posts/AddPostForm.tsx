@@ -1,54 +1,59 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { InitialState } from "./postsSlice";
-
-type Post = Partial<InitialState>;
-
-const defaultPost: InitialState = {
-  id: "",
-  title: "",
-  content: "",
-};
+import { useDispatch } from "react-redux";
+import { nanoid } from "@reduxjs/toolkit";
+import { postAdd } from "./postsSlice";
 
 export const AddPostForm = () => {
-  const [post, setPost] = useState(defaultPost);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const onInputChange = <P extends keyof Post>(prop: P, value: Post[P]) => {
-    setPost({ ...post, [prop]: value });
-  };
+  const dispatch = useDispatch();
+  const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const onContentChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setContent(e.target.value);
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    // send data to the Redux store
+  const handleOnSubmit = () => {
+    console.log("Submit Form");
+    if (title && content) {
+      dispatch(
+        postAdd({
+          id: nanoid(),
+          title: title,
+          content: content,
+        })
+      );
+      setTitle("");
+      setContent("");
+    }
   };
 
   return (
     <div>
       <h1>Add Post</h1>
-      <Form>
-        <Form.Group>
-          <Form.Label>Title</Form.Label>
-          <Form.Control
+      <section>
+        <form>
+          <label htmlFor="postTitle">Post Title:</label>
+          <input
             type="text"
-            placeholder="Enter title"
-            value={defaultPost.title}
-            onChange={(e) => onInputChange("title", e.target.value)}
+            id="postTitle"
+            name="postTitle"
+            value={title}
+            onChange={onTitleChanged}
           />
-        </Form.Group>
-
-        <Form.Group>
-          <Form.Label>Content</Form.Label>
-          <Form.Control
+          <label htmlFor="postContent">Content:</label>
+          <input
             type="text"
-            placeholder="Content"
-            value={defaultPost.content}
-            onChange={(e) => onInputChange("content", e.target.value)}
+            id="postContent"
+            name="postContent"
+            value={content}
+            onChange={onContentChanged}
           />
-        </Form.Group>
-        <Button variant="primary" type="submit" onSubmit={handleOnSubmit}>
-          Submit
-        </Button>
-      </Form>
+          <button type="button" onClick={handleOnSubmit}>
+            Save Post
+          </button>
+        </form>
+      </section>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface InitialState {
   id: string;
@@ -15,7 +15,13 @@ const initialState: InitialState[] = [
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    postAdd: (state, action: PayloadAction<InitialState>) => {
+      state.push(action.payload);
+    },
+  },
 });
+
+export const { postAdd } = postSlice.actions;
 
 export default postSlice.reducer;
