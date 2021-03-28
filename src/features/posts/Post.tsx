@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { InitialState } from "./postsSlice";
-import { RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 
 interface MatchParams {
   postID: string;
@@ -35,6 +35,9 @@ export const Post = ({ match }: MatchProps) => {
       <Card.Body>
         <Card.Title>{post.title}</Card.Title>
         <Card.Text>{post.content}</Card.Text>
+        <Link to={`/editPost/${post.id}`} className="button">
+          Edit Post
+        </Link>
       </Card.Body>
     </Card>
   );
