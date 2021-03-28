@@ -6,6 +6,10 @@ export interface InitialState {
   content: string;
 }
 
+export interface InitialStateUser extends InitialState {
+  userID?: string;
+}
+
 const initialState: InitialState[] = [
   { id: "1", title: "First Post!", content: "Hello!" },
   { id: "2", title: "Second Post", content: "More text" },
@@ -17,21 +21,22 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     postAdd: {
-      reducer(state, action: PayloadAction<InitialState>) {
+      reducer(state, action: PayloadAction<InitialStateUser>) {
         state.push(action.payload);
       },
-      prepare(title, content) {
+      prepare(title, content, userID) {
         return {
           payload: {
             id: nanoid(),
             title,
             content,
+            userID,
           },
         };
       },
     },
     postUpdate: {
-      reducer(state, action: PayloadAction<InitialState>) {
+      reducer(state, action: PayloadAction<InitialStateUser>) {
         const { id, title, content } = action.payload;
         const existingPost = state.find((post) => post.id === id);
         if (existingPost) {
