@@ -27,13 +27,7 @@ export const EditPostForm = ({ match }: MatchProps) => {
   const handleOnSubmit = (e: React.FormEvent) => {
     if (title && content) {
       e.preventDefault();
-      dispatch(
-        postUpdate({
-          id: postID,
-          title,
-          content,
-        })
-      );
+      dispatch(postUpdate(postID, title, content));
       history.push(`/posts/${postID}`);
     }
   };
