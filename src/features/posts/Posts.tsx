@@ -9,11 +9,17 @@ import { TimeAgo } from "./TimeAgo";
 
 export const PostsList = () => {
   const posts = useSelector((state: RootState) => state.posts);
+  const distantFuture = new Date(8640000000000000);
+  const orderedPost = posts?.slice().sort((a, b) => {
+    let dateA = a.date ? new Date(a.date) : distantFuture;
+    let dateB = b.date ? new Date(b.date) : distantFuture;
+    return dateA.getTime() - dateB.getTime();
+  });
 
   return (
     <div>
       <h1>Posts</h1>
-      {posts?.map((post: InitialStateUser) => {
+      {orderedPost?.map((post: InitialStateUser) => {
         return (
           <Card
             bg="Primary"

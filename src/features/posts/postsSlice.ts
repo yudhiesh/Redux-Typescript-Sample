@@ -11,10 +11,22 @@ export interface InitialStateUser extends InitialState {
   userID?: string;
 }
 
-const initialState: InitialState[] = [
+const initialState: InitialStateUser[] = [
   { id: "1", title: "First Post!", content: "Hello!" },
   { id: "2", title: "Second Post", content: "More text" },
   { id: "3", title: "Third Post", content: "Hello World!" },
+  {
+    id: "4",
+    title: "Fourth Post",
+    content: "Hi World!",
+    date: "2021-03-29T06:02:41.692Z",
+  },
+  {
+    id: "5",
+    title: "Fifth Post",
+    content: "Hi again World!",
+    date: "2021-03-29T06:04:35.008Z",
+  },
 ];
 
 const postSlice = createSlice({
