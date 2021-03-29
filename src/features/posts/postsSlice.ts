@@ -6,26 +6,66 @@ export interface InitialState {
   content: string;
 }
 
+export interface IReactionEmojis {
+  thumbsUp: string;
+  hooray: string;
+  heart: string;
+  rocket: string;
+  eyes: string;
+}
+
+export interface IReactionEmojisNumber {
+  thumbsUp: number;
+  hooray: number;
+  heart: number;
+  rocket: number;
+  eyes: number;
+}
+export const startingEmoji: IReactionEmojisNumber = {
+  thumbsUp: 0,
+  hooray: 0,
+  heart: 0,
+  rocket: 0,
+  eyes: 0,
+};
+
 export interface InitialStateUser extends InitialState {
   date?: string;
   userID?: string;
+  reactions?: IReactionEmojisNumber;
 }
 
 const initialState: InitialStateUser[] = [
-  { id: "1", title: "First Post!", content: "Hello!" },
-  { id: "2", title: "Second Post", content: "More text" },
-  { id: "3", title: "Third Post", content: "Hello World!" },
+  {
+    id: "1",
+    title: "First Post!",
+    content: "Hello!",
+  },
+  {
+    id: "2",
+    title: "Second Post",
+    content: "More text",
+  },
+  {
+    id: "3",
+    title: "Third Post",
+    content: "Hello World!",
+
+    reactions: { thumbsUp: 0, hooray: 1, heart: 1, rocket: 1, eyes: 0 },
+  },
   {
     id: "4",
     title: "Fourth Post",
     content: "Hi World!",
     date: "2021-03-29T06:02:41.692Z",
+    reactions: { thumbsUp: 0, hooray: 1, heart: 1, rocket: 1, eyes: 0 },
   },
   {
     id: "5",
     title: "Fifth Post",
     content: "Hi again World!",
     date: "2021-03-29T06:04:35.008Z",
+    reactions: { thumbsUp: 0, hooray: 1, heart: 1, rocket: 1, eyes: 0 },
   },
 ];
 
@@ -45,12 +85,18 @@ const postSlice = createSlice({
             title,
             content,
             userID,
+            reactions: startingEmoji,
           },
         };
       },
     },
     postUpdate: {
-      reducer(state, action: PayloadAction<InitialStateUser>) {
+      reducer(
+        state,
+        action: PayloadAction<
+          Pick<InitialStateUser, "id" | "title" | "content">
+        >
+      ) {
         const { id, title, content } = action.payload;
         const existingPost = state.find((post) => post.id === id);
         if (existingPost) {
@@ -68,9 +114,21 @@ const postSlice = createSlice({
         };
       },
     },
+    reactionAdd(
+      state,
+      action: PayloadAction<{ id: string; reaction: string }>
+    ) {
+      const { id, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === id);
+      if (existingPost) {
+        existingPost.reactions
+          ? existingPost.reactions[reaction as keyof IReactionEmojis]++
+          : (existingPost.reactions = startingEmoji);
+      }
+    },
   },
 });
 
-export const { postAdd, postUpdate } = postSlice.actions;
+export const { postAdd, postUpdate, reactionAdd } = postSlice.actions;
 
 export default postSlice.reducer;
