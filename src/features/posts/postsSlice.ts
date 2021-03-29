@@ -7,6 +7,7 @@ export interface InitialState {
 }
 
 export interface InitialStateUser extends InitialState {
+  date?: string;
   userID?: string;
 }
 
@@ -28,6 +29,7 @@ const postSlice = createSlice({
         return {
           payload: {
             id: nanoid(),
+            date: new Date().toISOString(),
             title,
             content,
             userID,

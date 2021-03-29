@@ -5,6 +5,7 @@ import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import { InitialStateUser } from "./postsSlice";
 import { PostAuthor } from "./PostAuthor";
+import { TimeAgo } from "./TimeAgo";
 
 export const PostsList = () => {
   const posts = useSelector((state: RootState) => state.posts);
@@ -27,6 +28,8 @@ export const PostsList = () => {
               <PostAuthor userID={post.userID} />
               <br />
               <Link to={`/posts/${post.id}`}>View Post</Link>
+              <br />
+              <TimeAgo timestamp={post.date} />
             </Card.Body>
           </Card>
         );

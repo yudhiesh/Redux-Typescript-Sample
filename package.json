@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
     "bootstrap": "^4.6.0",
+    "date-fns": "^2.19.0",
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
