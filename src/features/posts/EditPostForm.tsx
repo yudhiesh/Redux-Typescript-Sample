@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useHistory } from "react-router-dom";
-import { postUpdate } from "./postsSlice";
+import { postUpdate, selectPostById } from "./postsSlice";
 import { MatchProps } from "./Post";
 
 export const EditPostForm = ({ match }: MatchProps) => {
@@ -12,9 +12,7 @@ export const EditPostForm = ({ match }: MatchProps) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const post = useSelector((state: RootState) =>
-    state.posts.find((post) => post.id === postID)
-  );
+  const post = useSelector((state: RootState) => selectPostById(state, postID));
 
   const [title, setTitle] = useState(post?.title);
   const [content, setContent] = useState(post?.content);

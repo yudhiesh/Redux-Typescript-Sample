@@ -1,5 +1,5 @@
 import React from "react";
-import { InitialStateUser } from "./postsSlice";
+import { Post } from "./postsSlice";
 import { useDispatch } from "react-redux";
 import { reactionAdd, EmojiKeysString } from "./postsSlice";
 
@@ -12,7 +12,7 @@ export const reactionEmojis: EmojiKeysString = {
 };
 
 interface ReactionProps {
-  post: InitialStateUser;
+  post: Post;
 }
 
 export const ReactionButtons = ({ post }: ReactionProps) => {

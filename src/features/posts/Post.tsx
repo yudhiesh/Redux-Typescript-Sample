@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { InitialState } from "./postsSlice";
+import { selectPostById } from "./postsSlice";
 import { Link, RouteComponentProps } from "react-router-dom";
 
 interface MatchParams {
@@ -14,9 +14,7 @@ export interface MatchProps extends RouteComponentProps<MatchParams> {}
 export const Post = ({ match }: MatchProps) => {
   const { postID } = match.params;
   console.log("HI");
-  const post = useSelector((state: RootState) =>
-    state.posts.find((post: InitialState) => post.id === postID)
-  );
+  const post = useSelector((state: RootState) => selectPostById(state, postID));
   if (!post) {
     return (
       <section>

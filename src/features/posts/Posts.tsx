@@ -1,15 +1,14 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
-import { InitialStateUser } from "./postsSlice";
+import { Post, selectAllPosts } from "./postsSlice";
 import { PostAuthor } from "./PostAuthor";
 import { TimeAgo } from "./TimeAgo";
 import { ReactionButtons } from "./ReactionButtons";
 
 export const PostsList = () => {
-  const posts = useSelector((state: RootState) => state.posts);
+  const posts = useSelector(selectAllPosts);
   const distantFuture = new Date(8640000000000000);
   const orderedPost = posts?.slice().sort((a, b) => {
     let dateA = a.date ? a.date : new Date(distantFuture);
@@ -20,7 +19,7 @@ export const PostsList = () => {
   return (
     <div>
       <h1>Posts</h1>
-      {orderedPost?.map((post: InitialStateUser) => {
+      {orderedPost?.map((post: Post) => {
         return (
           <Card
             bg="Primary"
