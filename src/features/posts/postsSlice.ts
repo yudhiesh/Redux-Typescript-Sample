@@ -1,4 +1,10 @@
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  nanoid,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 
 export interface Post {
@@ -11,18 +17,28 @@ export interface Post {
 }
 
 type Status = "idle" | "loading" | "succeeded" | "failed";
-type Errors = string | null;
+type Error = string | null;
 
 export interface InitialState {
   posts: Post[];
   status: Status;
-  errors?: Errors;
+  error: Error;
 }
 
 export type EmojiKeys = "thumbsUp" | "hooray" | "heart" | "rocket" | "eyes";
 
 export type EmojiKeysNumber = Record<EmojiKeys, number>;
 export type EmojiKeysString = Record<EmojiKeys, string>;
+
+export const selectAllPosts = (state: RootState) => state.posts.posts;
+
+export const selectPostById = (state: RootState, postId: string) =>
+  state.posts.posts.find((post) => post.id === postId);
+
+export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
+  const response = await client.get("fakeApi/posts");
+  return response.posts;
+});
 
 export const startingEmoji: EmojiKeysNumber = {
   thumbsUp: 0,
@@ -35,7 +51,7 @@ export const startingEmoji: EmojiKeysNumber = {
 const initialState: InitialState = {
   posts: [],
   status: "idle",
-  errors: null,
+  error: null,
 };
 
 const postSlice = createSlice({
@@ -46,7 +62,6 @@ const postSlice = createSlice({
       reducer(state, action: PayloadAction<Post>) {
         state.posts.push(action.payload);
       },
-      /* eslint-disable no-unused-vars */
       prepare(title, content, userID) {
         return {
           payload: {
@@ -59,7 +74,6 @@ const postSlice = createSlice({
           },
         };
       },
-      /* eslint-disable no-unused-vars */
     },
     postUpdate: {
       reducer(
@@ -96,13 +110,22 @@ const postSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    // eslint-disable-next-line no-unused-vars
+    builder.addCase(fetchPosts.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchPosts.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.posts = state.posts.concat(action.payload);
+    });
+    builder.addCase(fetchPosts.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message as Error;
+    });
+  },
 });
 
 export const { postAdd, postUpdate, reactionAdd } = postSlice.actions;
 
 export default postSlice.reducer;
-
-export const selectAllPosts = (state: RootState) => state.posts.posts;
-
-export const selectPostById = (state: RootState, postId: string) =>
-  state.posts.posts.find((post) => post.id === postId);
