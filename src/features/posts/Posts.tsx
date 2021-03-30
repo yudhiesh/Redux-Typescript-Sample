@@ -12,9 +12,9 @@ export const PostsList = () => {
   const posts = useSelector((state: RootState) => state.posts);
   const distantFuture = new Date(8640000000000000);
   const orderedPost = posts?.slice().sort((a, b) => {
-    let dateA = a.date ? new Date(a.date) : distantFuture;
-    let dateB = b.date ? new Date(b.date) : distantFuture;
-    return dateA.getTime() - dateB.getTime();
+    let dateA = a.date ? a.date : new Date(distantFuture);
+    let dateB = b.date ? b.date : new Date(distantFuture);
+    return dateB.toLocaleString().localeCompare(dateA.toLocaleString());
   });
 
   return (

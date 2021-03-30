@@ -5,6 +5,11 @@ export interface InitialState {
   title: string;
   content: string;
 }
+export interface InitialStateUser extends InitialState {
+  date?: string;
+  userID?: string;
+  reactions?: EmojiKeysNumber;
+}
 
 export type EmojiKeys = "thumbsUp" | "hooray" | "heart" | "rocket" | "eyes";
 
@@ -18,12 +23,6 @@ export const startingEmoji: EmojiKeysNumber = {
   rocket: 0,
   eyes: 0,
 };
-
-export interface InitialStateUser extends InitialState {
-  date?: string;
-  userID?: string;
-  reactions?: EmojiKeysNumber;
-}
 
 const initialState: InitialStateUser[] = [
   {
