@@ -1,9 +1,9 @@
 import React from "react";
 import { InitialStateUser } from "./postsSlice";
 import { useDispatch } from "react-redux";
-import { reactionAdd, IReactionEmojis } from "./postsSlice";
+import { reactionAdd, EmojiKeysString } from "./postsSlice";
 
-export const reactionEmojis: IReactionEmojis = {
+export const reactionEmojis: EmojiKeysString = {
   thumbsUp: "👍",
   hooray: "🎉",
   heart: "❤️",
@@ -27,7 +27,7 @@ export const ReactionButtons = ({ post }: ReactionProps) => {
           onClick={() => dispatch(reactionAdd({ id: post.id, reaction: name }))}
         >
           {emoji}{" "}
-          {post.reactions && post.reactions[name as keyof IReactionEmojis]}
+          {post.reactions && post.reactions[name as keyof EmojiKeysString]}
         </button>
       );
     }

@@ -6,22 +6,12 @@ export interface InitialState {
   content: string;
 }
 
-export interface IReactionEmojis {
-  thumbsUp: string;
-  hooray: string;
-  heart: string;
-  rocket: string;
-  eyes: string;
-}
+export type EmojiKeys = "thumbsUp" | "hooray" | "heart" | "rocket" | "eyes";
 
-export interface IReactionEmojisNumber {
-  thumbsUp: number;
-  hooray: number;
-  heart: number;
-  rocket: number;
-  eyes: number;
-}
-export const startingEmoji: IReactionEmojisNumber = {
+export type EmojiKeysNumber = Record<EmojiKeys, number>;
+export type EmojiKeysString = Record<EmojiKeys, string>;
+
+export const startingEmoji: EmojiKeysNumber = {
   thumbsUp: 0,
   hooray: 0,
   heart: 0,
@@ -32,7 +22,7 @@ export const startingEmoji: IReactionEmojisNumber = {
 export interface InitialStateUser extends InitialState {
   date?: string;
   userID?: string;
-  reactions?: IReactionEmojisNumber;
+  reactions?: EmojiKeysNumber;
 }
 
 const initialState: InitialStateUser[] = [
@@ -122,7 +112,7 @@ const postSlice = createSlice({
       const existingPost = state.find((post) => post.id === id);
       if (existingPost) {
         existingPost.reactions
-          ? existingPost.reactions[reaction as keyof IReactionEmojis]++
+          ? existingPost.reactions[reaction as keyof EmojiKeysString]++
           : (existingPost.reactions = startingEmoji);
       }
     },
