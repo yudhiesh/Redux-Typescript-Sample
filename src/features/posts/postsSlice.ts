@@ -36,7 +36,7 @@ export const selectPostById = (state: RootState, postId: string) =>
   state.posts.posts.find((post) => post.id === postId);
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await client.get("fakeApi/posts");
+  const response = await client.get("/fakeApi/posts");
   return response.posts;
 });
 
@@ -112,7 +112,7 @@ const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     // eslint-disable-next-line no-unused-vars
-    builder.addCase(fetchPosts.pending, (state, action) => {
+    builder.addCase(fetchPosts.pending, (state, _) => {
       state.status = "loading";
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {

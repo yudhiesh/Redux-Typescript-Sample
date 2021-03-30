@@ -65,7 +65,7 @@ const notificationTemplates = [
 new Server({
   routes() {
     this.namespace = "fakeApi";
-    this.timing = 2000;
+    //this.timing = 2000
 
     this.resource("users");
     this.resource("posts");
@@ -73,7 +73,6 @@ new Server({
 
     const server = this;
 
-    /* eslint-disable no-unused-vars */
     this.post("/posts", function(schema, req) {
       const data = this.normalizedRequestAttrs();
       data.date = new Date().toISOString();
@@ -90,7 +89,6 @@ new Server({
       const result = server.create("post", data);
       return result;
     });
-    /* eslint-disable no-unused-vars */
 
     this.get("/posts/:postId/comments", (schema, req) => {
       const post = schema.posts.find(req.params.postId);
@@ -186,10 +184,10 @@ new Server({
           eyes: 0,
         };
       },
-      /* eslint-disable no-unused-vars */
-      afterCreate(post, server) {},
+      afterCreate(post, server) {
+        server.createList("comment", 3, { post });
+      },
 
-      /* eslint-enable no-unused-vars */
       user: association(),
     }),
     comment: Factory.extend({
