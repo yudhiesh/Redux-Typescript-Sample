@@ -4,7 +4,7 @@ import { RootState } from "../../app/store";
 import { Users } from "../users/usersSlice";
 
 interface PostAuthorProps {
-  userID?: string | undefined;
+  userID: string | undefined;
 }
 
 export const PostAuthor = ({ userID }: PostAuthorProps) => {

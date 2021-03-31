@@ -23,7 +23,7 @@ const IdSerializer = RestSerializer.extend({
 // a consistent set of users / entries each time the page loads.
 // This can be reset by deleting this localStorage value,
 // or turned off by setting `useSeededRNG` to false.
-let useSeededRNG = true;
+const useSeededRNG = false;
 
 let rng = seedrandom();
 
@@ -58,14 +58,14 @@ const randomFromArray = (array) => {
 const notificationTemplates = [
   "poked you",
   "says hi!",
-  `is glad we're friends`,
+  "is glad we're friends",
   "sent you a gift",
 ];
 
 new Server({
   routes() {
-    this.namespace = "fakeApi";
-    //this.timing = 2000
+    this.namespace = "api";
+    // this.timing = 2000;
 
     this.resource("users");
     this.resource("posts");
@@ -73,6 +73,7 @@ new Server({
 
     const server = this;
 
+    // eslint-disable-next-line no-unused-vars
     this.post("/posts", function(schema, req) {
       const data = this.normalizedRequestAttrs();
       data.date = new Date().toISOString();

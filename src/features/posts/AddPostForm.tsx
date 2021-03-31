@@ -21,7 +21,7 @@ export const AddPostForm = () => {
   const handleOnSubmit = (e: React.FormEvent) => {
     if (title && content) {
       e.preventDefault();
-      dispatch(postAdd(title, content, userId));
+      dispatch(postAdd(title, content, userId, "10"));
       setTitle("");
       setContent("");
     }

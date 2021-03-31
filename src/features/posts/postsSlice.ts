@@ -14,6 +14,7 @@ export interface Post {
   date: string;
   userID: string;
   reactions: EmojiKeysNumber;
+  user: string;
 }
 
 type Status = "idle" | "loading" | "succeeded" | "failed";
@@ -36,7 +37,7 @@ export const selectPostById = (state: RootState, postId: string) =>
   state.posts.posts.find((post) => post.id === postId);
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await client.get("/fakeApi/posts");
+  const response = await client.get("/api/posts");
   return response.posts;
 });
 
@@ -62,7 +63,7 @@ const postSlice = createSlice({
       reducer(state, action: PayloadAction<Post>) {
         state.posts.push(action.payload);
       },
-      prepare(title, content, userID) {
+      prepare(title, content, userID, user) {
         return {
           payload: {
             id: nanoid(),
@@ -71,6 +72,7 @@ const postSlice = createSlice({
             content,
             userID,
             reactions: startingEmoji,
+            user,
           },
         };
       },
@@ -104,9 +106,7 @@ const postSlice = createSlice({
       const { id, reaction } = action.payload;
       const existingPost = state.posts.find((post) => post.id === id);
       if (existingPost) {
-        existingPost.reactions
-          ? existingPost.reactions[reaction as keyof EmojiKeysString]++
-          : (existingPost.reactions = startingEmoji);
+        existingPost.reactions[reaction as keyof EmojiKeysString]++;
       }
     },
   },
@@ -121,7 +121,7 @@ const postSlice = createSlice({
     });
     builder.addCase(fetchPosts.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error.message as Error;
+      state.error = action.error.message as string;
     });
   },
 });

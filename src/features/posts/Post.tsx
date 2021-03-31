@@ -13,7 +13,6 @@ export interface MatchProps extends RouteComponentProps<MatchParams> {}
 
 export const Post = ({ match }: MatchProps) => {
   const { postID } = match.params;
-  console.log("HI");
   const post = useSelector((state: RootState) => selectPostById(state, postID));
   if (!post) {
     return (

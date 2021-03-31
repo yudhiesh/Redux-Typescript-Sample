@@ -1487,9 +1487,9 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
   integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
 
-"@reduxjs/toolkit@^1.2.5":
+"@reduxjs/toolkit@^1.5.1":
   version "1.5.1"
-  resolved "https://registry.npmjs.org/@reduxjs/toolkit/-/toolkit-1.5.1.tgz"
+  resolved "https://registry.npmjs.org/@reduxjs/toolkit/-/toolkit-1.5.1.tgz#05daa2f6eebc70dc18cd98a90421fab7fa565dc5"
   integrity sha512-PngZKuwVZsd+mimnmhiOQzoD0FiMjqVks6ituO1//Ft5UEX5Ca9of13NEjo//pU22Jk7z/mdXVsmDfgsig1osA==
   dependencies:
     immer "^8.0.1"
