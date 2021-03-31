@@ -1,9 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  nanoid,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 
@@ -35,6 +30,14 @@ export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const selectPostById = (state: RootState, postId: string) =>
   state.posts.posts.find((post) => post.id === postId);
 
+export const addNewPost = createAsyncThunk(
+  "posts/addPosts",
+  async (initialPost: Pick<Post, "title" | "content" | "user">) => {
+    const response = await client.post("/api/posts", { post: initialPost });
+    return response.post;
+  }
+);
+
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   const response = await client.get("/api/posts");
   return response.posts;
@@ -58,23 +61,6 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    postAdd: {
-      reducer(state, action: PayloadAction<Post>) {
-        state.posts.push(action.payload);
-      },
-      prepare(title, content, user) {
-        return {
-          payload: {
-            id: nanoid(),
-            date: new Date().toISOString(),
-            title,
-            content,
-            user,
-            reactions: startingEmoji,
-          },
-        };
-      },
-    },
     postUpdate: {
       reducer(
         state,
@@ -99,12 +85,12 @@ const postSlice = createSlice({
     },
     reactionAdd(
       state,
-      action: PayloadAction<{ id: string; reaction: string }>
+      action: PayloadAction<{ id: string; reaction: EmojiKeys }>
     ) {
       const { id, reaction } = action.payload;
       const existingPost = state.posts.find((post) => post.id === id);
       if (existingPost) {
-        existingPost.reactions[reaction as keyof EmojiKeysString]++;
+        existingPost.reactions[reaction]++;
       }
     },
   },
@@ -119,11 +105,14 @@ const postSlice = createSlice({
     });
     builder.addCase(fetchPosts.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error.message as string;
+      state.error = action.error.message as Error;
+    });
+    builder.addCase(addNewPost.fulfilled, (state, action) => {
+      state.posts.push(action.payload);
     });
   },
 });
 
-export const { postAdd, postUpdate, reactionAdd } = postSlice.actions;
+export const { postUpdate, reactionAdd } = postSlice.actions;
 
 export default postSlice.reducer;

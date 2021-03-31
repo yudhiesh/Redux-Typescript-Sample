@@ -8,7 +8,6 @@ interface PostAuthorProps {
 }
 
 export const PostAuthor = ({ userID }: PostAuthorProps) => {
-  console.log(userID);
   const author = useSelector((state: RootState) =>
     state?.users?.find((user: Users) => user.id === userID)
   );
