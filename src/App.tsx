@@ -15,6 +15,8 @@ import {
 } from "react-router-dom";
 import { Post } from "./features/posts/Post";
 import { EditPostForm } from "./features/posts/EditPostForm";
+import { Users } from "./features/users/Users";
+import { User } from "./features/users/User";
 
 function App() {
   return (
@@ -32,12 +34,17 @@ function App() {
               <Nav.Link as={Link} to="/addposts">
                 Add Post
               </Nav.Link>
+              <Nav.Link as={Link} to="/users">
+                Users Post
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
         <Switch>
           <Route exact path="/posts/:postID" component={Post} />
           <Route exact path="/editPost/:postID" component={EditPostForm} />
+          <Route exact path="/users/:userId" component={User} />
+          <Route exact path="/users" component={Users} />
           <Route path="/posts" component={PostsList} />
           <Route path="/addposts" component={AddPostForm} />
           <Route exact path="/" component={Counter} />
