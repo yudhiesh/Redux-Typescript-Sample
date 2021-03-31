@@ -47,7 +47,7 @@ function App() {
           <Route exact path="/users" component={Users} />
           <Route path="/posts" component={PostsList} />
           <Route path="/addposts" component={AddPostForm} />
-          <Route exact path="/" component={Counter} />
+          <Route path="/" component={Counter} />
           <Redirect to="/" />
         </Switch>
       </div>

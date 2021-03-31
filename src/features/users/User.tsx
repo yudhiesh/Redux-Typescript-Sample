@@ -14,8 +14,8 @@ export const User = ({ match }: MatchPropsUser) => {
   );
 
   const usersPost = useSelector((state: RootState) => {
-    const allPost = selectAllPosts(state);
-    return allPost?.filter((post: Post) => post.id === userId);
+    const allPosts = selectAllPosts(state);
+    return allPosts?.filter((post: Post) => post.user === userId);
   });
 
   const postTitle = usersPost?.map((post: Post) => (
