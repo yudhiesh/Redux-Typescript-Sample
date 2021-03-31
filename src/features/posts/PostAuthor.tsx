@@ -2,10 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Users } from "../users/usersSlice";
-
-interface PostAuthorProps {
-  userID: string;
-}
+import { PostAuthorProps } from "../../types/types";
 
 export const PostAuthor = ({ userID }: PostAuthorProps) => {
   const author = useSelector((state: RootState) =>

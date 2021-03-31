@@ -1,6 +1,7 @@
 import React from "react";
-import { EmojiKeys, Post, reactionAdd, EmojiKeysString } from "./postsSlice";
+import { reactionAdd } from "./postsSlice";
 import { useDispatch } from "react-redux";
+import { ReactionProps, EmojiKeysString, EmojiKeys } from "../../types/types";
 
 export const reactionEmojis: EmojiKeysString = {
   thumbsUp: "👍",
@@ -9,10 +10,6 @@ export const reactionEmojis: EmojiKeysString = {
   rocket: "🚀",
   eyes: "👀",
 };
-
-interface ReactionProps {
-  post: Post;
-}
 
 export const ReactionButtons = ({ post }: ReactionProps) => {
   const dispatch = useDispatch();

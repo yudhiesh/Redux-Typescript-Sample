@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useHistory } from "react-router-dom";
 import { postUpdate, selectPostById } from "./postsSlice";
-import { MatchProps } from "./Post";
+import { MatchProps } from "../../types/types";
 
 export const EditPostForm = ({ match }: MatchProps) => {
   const { postID } = match.params;

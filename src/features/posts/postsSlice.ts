@@ -1,34 +1,18 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
-
-export interface Post {
-  id: string;
-  title: string;
-  content: string;
-  date: string;
-  user: string;
-  reactions: EmojiKeysNumber;
-}
-
-type Status = "idle" | "loading" | "succeeded" | "failed";
-type Error = string | null;
-
-export interface InitialState {
-  posts: Post[];
-  status: Status;
-  error: Error;
-}
-
-export type EmojiKeys = "thumbsUp" | "hooray" | "heart" | "rocket" | "eyes";
-
-export type EmojiKeysNumber = Record<EmojiKeys, number>;
-export type EmojiKeysString = Record<EmojiKeys, string>;
+import {
+  Error,
+  EmojiKeysNumber,
+  Post,
+  InitialStatePost,
+  ReactionAdd,
+} from "../../types/types";
 
 export const selectAllPosts = (state: RootState) => state.posts.posts;
 
 export const selectPostById = (state: RootState, postId: string) =>
-  state.posts.posts.find((post) => post.id === postId);
+  state.posts.posts.find((post: Post) => post.id === postId);
 
 export const addNewPost = createAsyncThunk(
   "posts/addPosts",
@@ -51,7 +35,7 @@ export const startingEmoji: EmojiKeysNumber = {
   eyes: 0,
 };
 
-const initialState: InitialState = {
+const initialState: InitialStatePost = {
   posts: [],
   status: "idle",
   error: null,
@@ -83,10 +67,7 @@ const postSlice = createSlice({
         };
       },
     },
-    reactionAdd(
-      state,
-      action: PayloadAction<{ id: string; reaction: EmojiKeys }>
-    ) {
+    reactionAdd(state, action: PayloadAction<ReactionAdd>) {
       const { id, reaction } = action.payload;
       const existingPost = state.posts.find((post) => post.id === id);
       if (existingPost) {
@@ -95,8 +76,7 @@ const postSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // eslint-disable-next-line no-unused-vars
-    builder.addCase(fetchPosts.pending, (state, _) => {
+    builder.addCase(fetchPosts.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {

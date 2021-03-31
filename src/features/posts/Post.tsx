@@ -3,13 +3,8 @@ import { Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { selectPostById } from "./postsSlice";
-import { Link, RouteComponentProps } from "react-router-dom";
-
-interface MatchParams {
-  postID: string;
-}
-
-export interface MatchProps extends RouteComponentProps<MatchParams> {}
+import { Link } from "react-router-dom";
+import { MatchProps } from "../../types/types";
 
 export const Post = ({ match }: MatchProps) => {
   const { postID } = match.params;
