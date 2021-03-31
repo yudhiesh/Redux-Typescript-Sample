@@ -39,7 +39,7 @@ export const PostsList = () => {
         <Card.Body>
           <Card.Title>{post.title}</Card.Title>
           <Card.Text>{post.content}</Card.Text>
-          <PostAuthor userID={post.userID} />
+          <PostAuthor userID={post.user} />
           <br />
           <Link to={`/posts/${post.id}`}>View Post</Link>
           <br />

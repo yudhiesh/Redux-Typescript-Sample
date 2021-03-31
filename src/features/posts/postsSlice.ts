@@ -12,9 +12,8 @@ export interface Post {
   title: string;
   content: string;
   date: string;
-  userID: string;
-  reactions: EmojiKeysNumber;
   user: string;
+  reactions: EmojiKeysNumber;
 }
 
 type Status = "idle" | "loading" | "succeeded" | "failed";
@@ -63,16 +62,15 @@ const postSlice = createSlice({
       reducer(state, action: PayloadAction<Post>) {
         state.posts.push(action.payload);
       },
-      prepare(title, content, userID, user) {
+      prepare(title, content, user) {
         return {
           payload: {
             id: nanoid(),
             date: new Date().toISOString(),
             title,
             content,
-            userID,
-            reactions: startingEmoji,
             user,
+            reactions: startingEmoji,
           },
         };
       },

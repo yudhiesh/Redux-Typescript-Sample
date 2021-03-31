@@ -4,12 +4,13 @@ import { RootState } from "../../app/store";
 import { Users } from "../users/usersSlice";
 
 interface PostAuthorProps {
-  userID: string | undefined;
+  userID: string;
 }
 
 export const PostAuthor = ({ userID }: PostAuthorProps) => {
+  console.log(userID);
   const author = useSelector((state: RootState) =>
-    state.users.find((user: Users) => user.id === userID)
+    state?.users?.find((user: Users) => user.id === userID)
   );
 
   return <span>by {author ? author.name : "Unknown author"}</span>;
