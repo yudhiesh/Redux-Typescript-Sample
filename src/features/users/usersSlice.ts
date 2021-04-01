@@ -4,12 +4,11 @@ import { RootState } from "../../app/store";
 import { Users_ } from "../../types/types";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await client.get("/api/users");
+  const response = await client.get("/fakeApi/users");
   return response.users;
 });
 
 const initialState: Users_[] = [];
-
 
 const usersSlice = createSlice({
   name: "users",

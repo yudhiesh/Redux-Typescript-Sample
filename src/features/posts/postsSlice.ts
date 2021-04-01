@@ -17,13 +17,13 @@ export const selectPostById = (state: RootState, postId: string) =>
 export const addNewPost = createAsyncThunk(
   "posts/addPosts",
   async (initialPost: Pick<Post, "title" | "content" | "user">) => {
-    const response = await client.post("/api/posts", { post: initialPost });
+    const response = await client.post("/fakeApi/posts", { post: initialPost });
     return response.post;
   }
 );
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await client.get("/api/posts");
+  const response = await client.get("/fakeApi/posts");
   return response.posts;
 });
 

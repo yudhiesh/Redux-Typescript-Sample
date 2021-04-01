@@ -3,27 +3,25 @@ import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 import { Notifications } from "../../types/types";
 
-export const selectAllNotifications = (state: RootState) => state.notifications;
-
 export const fetchNotifications = createAsyncThunk<
   Notifications,
   void,
   { state: RootState }
->("notifications/fetchNotifications", async (_, thunkAPI) => {
-  const { getState } = thunkAPI;
+>("notifications/fetchNotifications", async (_, { getState }) => {
+  // We know that the state of the notifications are all contained inside the
+  // store
   const allNotifications = selectAllNotifications(getState());
   const [latestNotification] = allNotifications;
+  // eslint-disable-next-line no-unused-vars
   const latestTimestamp = latestNotification ? latestNotification.date : "";
-  const response = await client.get(
-    `/api/notifications?since=${latestTimestamp}`
-  );
-  return response.notifications as Notifications;
+  const response = await client.get(`/fakeApi/notifications`);
+  return response.notifications;
 });
 
 // Initial State for the notifications
 const initialState: Notifications[] = [];
 
-const notificationSlice = createSlice({
+const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {},
@@ -35,4 +33,6 @@ const notificationSlice = createSlice({
   },
 });
 
-export default notificationSlice.reducer;
+export default notificationsSlice.reducer;
+
+export const selectAllNotifications = (state: RootState) => state.notifications;
