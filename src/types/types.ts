@@ -1,5 +1,14 @@
 import { RouteComponentProps } from "react-router-dom";
 
+export interface Notifications {
+  id: string;
+  date: string;
+  message: string;
+  user: string;
+  read: boolean;
+  isNew: boolean;
+}
+
 export interface Users_ {
   id: string;
   firstName: string;
