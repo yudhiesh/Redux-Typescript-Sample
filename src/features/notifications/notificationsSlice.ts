@@ -22,9 +22,7 @@ export const fetchNotifications = createAsyncThunk<
   const [latestNotification] = allNotifications;
   // eslint-disable-next-line no-unused-vars
   const latestTimestamp = latestNotification ? latestNotification.date : "";
-  const response = await client.get(
-    `/fakeApi/notifications?since=${latestTimestamp}`
-  );
+  const response = await client.get(`/fakeApi/notifications`);
   return response.notifications;
 });
 
@@ -41,6 +39,7 @@ const notificationsSlice = createSlice({
       state.error = action.error.message as Error;
     });
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
+      state.status = "succeeded";
       state.notifications.push(action.payload);
       state.notifications.sort((a, b) => b.date.localeCompare(a.date));
     });
