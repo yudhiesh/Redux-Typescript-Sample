@@ -20,12 +20,16 @@ export const Notification = () => {
   );
   const error = useSelector((state: RootState) => state.notifications.error);
 
+  // 1st useEffect is used to render the notifications for the first time
+  // It also fetches the notifications when the status of the request is "idle"
   useEffect(() => {
     if (notificationsStatus === "idle") {
       dispatch(fetchNotifications());
     }
   }, [notificationsStatus, dispatch]);
 
+  // 2nd useEffect is used to set the fields of isNew in the notifications to
+  // true which fetches new notifications from the API
   useEffect(() => {
     dispatch(allNotificationsRead());
   });

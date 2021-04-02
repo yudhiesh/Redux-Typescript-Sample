@@ -34,7 +34,7 @@ const notificationsSlice = createSlice({
   reducers: {
     allNotificationsRead(state) {
       state.notifications.forEach((notification) => {
-        notification.isNew = true;
+        notification.read = true;
       });
     },
   },

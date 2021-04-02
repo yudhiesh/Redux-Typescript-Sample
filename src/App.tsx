@@ -12,11 +12,18 @@ import { EditPostForm } from "./features/posts/EditPostForm";
 import { Users } from "./features/users/Users";
 import { User } from "./features/users/User";
 import { Notification } from "./features/notifications/Notification";
-import { useDispatch } from "react-redux";
-import { fetchNotifications } from "./features/notifications/notificationsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchNotifications,
+  selectAllNotifications,
+} from "./features/notifications/notificationsSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const notifications = useSelector(selectAllNotifications);
+  const unreadNotifications = notifications.filter(
+    (notification) => !notification.read
+  ).length;
   const fetchNewNotifications = () => {
     dispatch(fetchNotifications());
   };
@@ -39,7 +46,7 @@ function App() {
                 Users Post
               </Nav.Link>
               <Nav.Link as={Link} to="/notifications">
-                Notifications
+                Notifications {unreadNotifications}
               </Nav.Link>
               <Button variant="light" onClick={fetchNewNotifications}>
                 Refresh Notifications
