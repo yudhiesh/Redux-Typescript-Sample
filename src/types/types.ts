@@ -30,6 +30,12 @@ export type Status = "idle" | "loading" | "succeeded" | "failed";
 
 export type Error = string | null;
 
+export interface InitialStateNotification {
+  notifications: Notifications[];
+  status: Status;
+  error: Error;
+}
+
 export interface InitialStatePost {
   posts: Post[];
   status: Status;
