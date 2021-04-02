@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { MatchPropsUser, Post } from "../../types/types";
 
 import { selectUsersById } from "./usersSlice";
-import { selectAllPosts } from "../posts/postsSlice";
+import { selectPostByUser } from "../posts/postsSlice";
 import { RootState } from "../../app/store";
 
 export const User = ({ match }: MatchPropsUser) => {
@@ -13,12 +13,11 @@ export const User = ({ match }: MatchPropsUser) => {
     selectUsersById(state, userId)
   );
 
-  const usersPost = useSelector((state: RootState) => {
-    const allPosts = selectAllPosts(state);
-    return allPosts?.filter((post: Post) => post.user === userId);
-  });
+  const userPost = useSelector((state: RootState) =>
+    selectPostByUser(state, userId)
+  );
 
-  const postTitle = usersPost?.map((post: Post) => (
+  const postTitle = userPost?.map((post: Post) => (
     <li key={post.id}>
       <Link to={`/posts/${post.id}`}>{post.title}</Link>
     </li>

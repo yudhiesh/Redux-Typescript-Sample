@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 import {
@@ -13,6 +18,11 @@ export const selectAllPosts = (state: RootState) => state.posts.posts;
 
 export const selectPostById = (state: RootState, postId: string) =>
   state.posts.posts.find((post: Post) => post.id === postId);
+
+export const selectPostByUser = createSelector(
+  [selectAllPosts, (state: RootState, userId: string) => userId],
+  (posts, userId) => posts.filter((post) => post.user === userId)
+);
 
 export const addNewPost = createAsyncThunk(
   "posts/addPosts",
