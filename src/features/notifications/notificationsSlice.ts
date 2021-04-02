@@ -31,7 +31,13 @@ export const fetchNotifications = createAsyncThunk<
 const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
-  reducers: {},
+  reducers: {
+    allNotificationsRead(state) {
+      state.notifications.forEach((notification) => {
+        notification.isNew = true;
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchNotifications.pending, (state) => {
       state.status = "loading";
@@ -41,13 +47,18 @@ const notificationsSlice = createSlice({
       state.error = action.error.message as Error;
     });
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
-      state.status = "succeeded";
       state.notifications.push(action.payload);
       state.notifications = state.notifications.flat();
+      state.notifications.forEach((notification) => {
+        notification.isNew = !notification.read;
+      });
       state.notifications.sort((a, b) => b.date.localeCompare(a.date));
+      state.status = "succeeded";
     });
   },
 });
+
+export const { allNotificationsRead } = notificationsSlice.actions;
 
 export default notificationsSlice.reducer;
 

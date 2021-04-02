@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import classnames from "classnames";
 import { selectAllUsers } from "../users/usersSlice";
 import {
   fetchNotifications,
   selectAllNotifications,
+  allNotificationsRead,
 } from "./notificationsSlice";
 import { RootState } from "../../app/store";
 import { Notifications, Users_ } from "../../types/types";
@@ -25,11 +26,14 @@ export const Notification = () => {
     }
   }, [notificationsStatus, dispatch]);
 
+  useEffect(() => {
+    dispatch(allNotificationsRead());
+  });
+
   let content;
   if (notificationsStatus === "loading") {
     content = <div className="loader">Loading...</div>;
   } else if (notificationsStatus === "succeeded") {
-    // Not sure why the notifications come in the form of a nested array
     content = notifications?.map((notification: Notifications) => {
       const message = notification.message;
       const id = notification.id;
@@ -41,8 +45,12 @@ export const Notification = () => {
         name: "Unknown User",
       };
 
+      const notificationClassname = classnames("notifications", {
+        new: notification.isNew,
+      });
+
       return (
-        <div key={id} className="notification">
+        <div key={id} className={notificationClassname}>
           <div>
             <b>{user.name}</b> {message}
           </div>
