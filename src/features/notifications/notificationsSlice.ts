@@ -43,6 +43,7 @@ const notificationsSlice = createSlice({
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.notifications.push(action.payload);
+      state.notifications = state.notifications.flat();
       state.notifications.sort((a, b) => b.date.localeCompare(a.date));
     });
   },

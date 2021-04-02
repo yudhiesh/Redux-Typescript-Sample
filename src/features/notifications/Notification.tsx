@@ -30,33 +30,28 @@ export const Notification = () => {
     content = <div className="loader">Loading...</div>;
   } else if (notificationsStatus === "succeeded") {
     // Not sure why the notifications come in the form of a nested array
-    const notificationFlattenedSorted = notifications
-      .flat()
-      .sort((a, b) => b.date.localeCompare(a.date));
-    content = notificationFlattenedSorted?.map(
-      (notification: Notifications) => {
-        const message = notification.message;
-        const id = notification.id;
-        const date = parseISO(notification.date);
-        const timeAgo = formatDistanceToNow(date);
-        const user = users.find(
-          (user: Users_) => user.id === notification.user
-        ) || {
-          name: "Unknown User",
-        };
+    content = notifications?.map((notification: Notifications) => {
+      const message = notification.message;
+      const id = notification.id;
+      const date = parseISO(notification.date);
+      const timeAgo = formatDistanceToNow(date);
+      const user = users.find(
+        (user: Users_) => user.id === notification.user
+      ) || {
+        name: "Unknown User",
+      };
 
-        return (
-          <div key={id} className="notification">
-            <div>
-              <b>{user.name}</b> {message}
-            </div>
-            <div title={notification.date}>
-              <i>{timeAgo} ago</i>
-            </div>
+      return (
+        <div key={id} className="notification">
+          <div>
+            <b>{user.name}</b> {message}
           </div>
-        );
-      }
-    );
+          <div title={notification.date}>
+            <i>{timeAgo} ago</i>
+          </div>
+        </div>
+      );
+    });
   } else if (notificationsStatus === "failed") {
     content = <div>{error}</div>;
   }
