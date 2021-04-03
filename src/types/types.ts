@@ -1,3 +1,4 @@
+import { EntityId } from "@reduxjs/toolkit";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface Notifications {
@@ -64,6 +65,8 @@ interface MatchParamsPost {
   postID: string;
 }
 
+export type PostExcerptProps = { postId: EntityId };
+
 export interface MatchPropsPost extends RouteComponentProps<MatchParamsPost> {}
 
 interface MatchParamsUser {
@@ -71,3 +74,7 @@ interface MatchParamsUser {
 }
 
 export interface MatchPropsUser extends RouteComponentProps<MatchParamsUser> {}
+
+export interface TimeAgoProps {
+  timestamp?: string;
+}

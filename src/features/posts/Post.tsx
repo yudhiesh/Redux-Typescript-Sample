@@ -1,14 +1,15 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { RootState, useTypedSelector } from "../../app/store";
 import { selectPostById } from "./postsSlice";
 import { Link } from "react-router-dom";
 import { MatchPropsPost } from "../../types/types";
 
 export const Post = ({ match }: MatchPropsPost) => {
   const { postID } = match.params;
-  const post = useSelector((state: RootState) => selectPostById(state, postID));
+  const post = useTypedSelector((state: RootState) =>
+    selectPostById(state, postID)
+  );
   if (!post) {
     return (
       <section>

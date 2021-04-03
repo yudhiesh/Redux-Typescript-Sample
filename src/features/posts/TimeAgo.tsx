@@ -1,9 +1,6 @@
 import React from "react";
 import { parseISO, formatDistanceToNow } from "date-fns";
-
-interface TimeAgoProps {
-  timestamp?: string;
-}
+import { TimeAgoProps } from "../../types/types";
 
 export const TimeAgo = ({ timestamp }: TimeAgoProps) => {
   let timeAgo = "";

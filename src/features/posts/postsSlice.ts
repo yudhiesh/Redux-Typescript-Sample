@@ -3,6 +3,7 @@ import {
   createSlice,
   PayloadAction,
   createSelector,
+  createEntityAdapter,
 } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
@@ -14,15 +15,27 @@ import {
   ReactionAdd,
 } from "../../types/types";
 
-export const selectAllPosts = (state: RootState) => state.posts.posts;
+// create the postAdapter object which will contain the ids & entities & the
+// post
+// Sort the posts instead of sorting it in the components
+const postAdapter = createEntityAdapter<Post>({
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
+});
 
-export const selectPostById = (state: RootState, postId: string) =>
-  state.posts.posts.find((post: Post) => post.id === postId);
+// Create the initialState which is Post & Pick<InitialStatePost, "status" |
+// "error">
+const initialState = postAdapter.getInitialState({
+  status: "idle",
+  error: "null",
+} as Pick<InitialStatePost, "status" | "error">);
 
-export const selectPostByUser = createSelector(
-  [selectAllPosts, (state: RootState, userId: string) => userId],
-  (posts, userId) => posts.filter((post) => post.user === userId)
-);
+// postAdapter already provides the functionality to get the post by id and
+// selecting all the post in state
+// These functions are no longer needed
+// export const selectAllPosts = (state: RootState) => state.posts.posts;
+
+// export const selectPostById = (state: RootState, postId: string) =>
+//   state.posts.posts.find((post: Post) => post.id === postId);
 
 export const addNewPost = createAsyncThunk(
   "posts/addPosts",
@@ -45,12 +58,6 @@ export const startingEmoji: EmojiKeysNumber = {
   eyes: 0,
 };
 
-const initialState: InitialStatePost = {
-  posts: [],
-  status: "idle",
-  error: null,
-};
-
 const postSlice = createSlice({
   name: "posts",
   initialState,
@@ -61,7 +68,8 @@ const postSlice = createSlice({
         action: PayloadAction<Pick<Post, "id" | "title" | "content">>
       ) {
         const { id, title, content } = action.payload;
-        const existingPost = state.posts.find((post) => post.id === id);
+        // Instead of looping over the data we access it by the id
+        const existingPost = state.entities[id];
         if (existingPost) {
           existingPost.title = title;
           existingPost.content = content;
@@ -79,7 +87,7 @@ const postSlice = createSlice({
     },
     reactionAdd(state, action: PayloadAction<ReactionAdd>) {
       const { id, reaction } = action.payload;
-      const existingPost = state.posts.find((post) => post.id === id);
+      const existingPost = state.entities[id];
       if (existingPost) {
         existingPost.reactions[reaction]++;
       }
@@ -91,14 +99,16 @@ const postSlice = createSlice({
     });
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.posts = state.posts.concat(action.payload);
+      // adds all the incoming post to the state
+      postAdapter.upsertMany(state, action.payload);
     });
     builder.addCase(fetchPosts.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message as Error;
     });
-    builder.addCase(addNewPost.fulfilled, (state, action) => {
-      state.posts.push(action.payload);
+    builder.addCase(addNewPost.fulfilled, () => {
+      // Add a single post to the posts
+      postAdapter.addOne;
     });
   },
 });
@@ -106,3 +116,15 @@ const postSlice = createSlice({
 export const { postUpdate, reactionAdd } = postSlice.actions;
 
 export default postSlice.reducer;
+
+// Export the base functions provided by createEntityAdapter
+export const {
+  selectAll: selectAllPosts,
+  selectById: selectPostById,
+  selectIds: selectPostsIds,
+} = postAdapter.getSelectors<RootState>((state) => state.posts);
+
+export const selectPostByUser = createSelector(
+  [selectAllPosts, (state: RootState, userId: string) => userId],
+  (posts, userId) => posts.filter((post: Post) => post.user === userId)
+);

@@ -1,17 +1,13 @@
 import React, { useEffect } from "react";
-import { Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchPosts, selectAllPosts } from "./postsSlice";
+import { fetchPosts, selectPostsIds } from "./postsSlice";
 import { RootState } from "../../app/store";
-import { PostAuthor } from "./PostAuthor";
-import { TimeAgo } from "./TimeAgo";
-import { ReactionButtons } from "./ReactionButtons";
-import { Post } from "../../types/types";
+import { EntityId } from "@reduxjs/toolkit";
+import { PostExcerpt } from "./PostExcerpt";
 
 export const PostsList = () => {
   const dispatch = useDispatch();
-  const posts = useSelector(selectAllPosts);
+  const orderedPostIds = useSelector(selectPostsIds);
   const postStatus = useSelector((state: RootState) => state.posts.status);
   const error = useSelector((state: RootState) => state.posts.error);
   useEffect(() => {
@@ -19,36 +15,14 @@ export const PostsList = () => {
       dispatch(fetchPosts());
     }
   }, [postStatus, dispatch]);
-  let content;
 
+  let content;
   if (postStatus === "loading") {
     content = <div className="loader">Loading...</div>;
   } else if (postStatus === "succeeded") {
-    // Sort posts in reverse chronological order by datetime string
-    const orderedPosts = posts
-      .slice()
-      .sort((a: Post, b: Post) => b.date.localeCompare(a.date));
-
-    content = orderedPosts.map((post: Post) => (
-      <Card
-        bg="Primary"
-        key={post.id}
-        text="dark"
-        style={{ width: "18rem" }}
-        className="mb-2"
-      >
-        <Card.Body>
-          <Card.Title>{post.title}</Card.Title>
-          <Card.Text>{post.content}</Card.Text>
-          <PostAuthor userID={post.user} />
-          <br />
-          <Link to={`/posts/${post.id}`}>View Post</Link>
-          <br />
-          <TimeAgo timestamp={post.date} />
-          <ReactionButtons post={post} />
-        </Card.Body>
-      </Card>
-    ));
+    content = orderedPostIds.map((postId: EntityId) => {
+      return <PostExcerpt key={postId} postId={postId} />;
+    });
   } else if (postStatus === "failed") {
     content = <div>{error}</div>;
   }
