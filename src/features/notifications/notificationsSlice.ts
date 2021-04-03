@@ -20,18 +20,19 @@ const initialState = notificationsAdapter.getInitialState({
   error: null,
 } as InitialStateNotification);
 
-export const fetchNotifications = createAsyncThunk(
-  "notifications/fetchNotifications",
-  async (_, { getState }) => {
-    const allNotifications = selectAllNotifications(getState() as RootState);
-    const [latestNotification] = allNotifications;
-    const latestTimestamp = latestNotification ? latestNotification.date : "";
-    const response = await client.get(
-      `/fakeApi/notifications?since=${latestTimestamp}`
-    );
-    return response.notifications;
-  }
-);
+export const fetchNotifications = createAsyncThunk<
+  Notifications[],
+  void,
+  { state: RootState }
+>("notifications/fetchNotifications", async (_, { getState }) => {
+  const allNotifications = selectAllNotifications(getState());
+  const [latestNotification] = allNotifications;
+  const latestTimestamp = latestNotification ? latestNotification.date : "";
+  const response = await client.get(
+    `/fakeApi/notifications?since=${latestTimestamp}`
+  );
+  return response.notifications;
+});
 
 const notificationsSlice = createSlice({
   name: "notifications",
