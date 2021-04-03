@@ -2,7 +2,6 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
-  PayloadAction,
 } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
@@ -52,16 +51,13 @@ const notificationsSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message as Error;
     });
-    builder.addCase(
-      fetchNotifications.fulfilled,
-      (state, action: PayloadAction<Notifications[]>) => {
-        state.status = "succeeded";
-        Object.values(state.entities).forEach((notification) => {
-          notification && (notification.isNew = !notification.read);
-        });
-        notificationsAdapter.upsertMany(state, action.payload);
-      }
-    );
+    builder.addCase(fetchNotifications.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      Object.values(state.entities).forEach((notification) => {
+        notification && (notification.isNew = !notification.read);
+      });
+      notificationsAdapter.upsertMany(state, action.payload);
+    });
   },
 });
 

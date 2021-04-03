@@ -106,9 +106,9 @@ const postSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message as Error;
     });
-    builder.addCase(addNewPost.fulfilled, () => {
+    builder.addCase(addNewPost.fulfilled, (state, action) => {
       // Add a single post to the posts
-      postAdapter.addOne;
+      postAdapter.addOne(state, action.payload);
     });
   },
 });
