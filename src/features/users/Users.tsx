@@ -1,12 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectAllUsers } from "./usersSlice";
-import { Users_ } from "../../types/types";
+import { useTypedSelector } from "../../app/store";
 
 export const Users = () => {
-  const users = useSelector(selectAllUsers);
-  const renderedUsers = users?.map((user: Users_) => (
+  const users = useTypedSelector(selectAllUsers);
+  const renderedUsers = users?.map((user) => (
     <li key={user.id}>
       <Link to={`/users/${user.id}`}>{user.name}</Link>
     </li>

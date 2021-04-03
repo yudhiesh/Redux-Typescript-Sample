@@ -1,13 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { Users_ } from "../../types/types";
+import { useTypedSelector } from "../../app/store";
 import { PostAuthorProps } from "../../types/types";
+import { selectUsersById } from "../users/usersSlice";
 
 export const PostAuthor = ({ userID }: PostAuthorProps) => {
-  const author = useSelector((state: RootState) =>
-    state?.users?.find((user: Users_) => user.id === userID)
-  );
+  const author = useTypedSelector((state) => selectUsersById(state, userID));
 
   return <span>by {author ? author.name : "Unknown author"}</span>;
 };

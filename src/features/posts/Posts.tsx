@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPosts, selectPostsIds } from "./postsSlice";
-import { RootState } from "../../app/store";
+import { RootState, useTypedSelector } from "../../app/store";
 import { EntityId } from "@reduxjs/toolkit";
 import { PostExcerpt } from "./PostExcerpt";
 
 export const PostsList = () => {
   const dispatch = useDispatch();
-  const orderedPostIds = useSelector(selectPostsIds);
+  const orderedPostIds = useTypedSelector(selectPostsIds);
   const postStatus = useSelector((state: RootState) => state.posts.status);
   const error = useSelector((state: RootState) => state.posts.error);
   useEffect(() => {
