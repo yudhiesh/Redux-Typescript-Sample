@@ -50,7 +50,8 @@ const notificationsSlice = createSlice({
     });
     builder.addCase(fetchNotifications.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error.message as Error;
+      // Replace undefined with null
+      state.error = action.error.message ?? null;
     });
     builder.addCase(fetchNotifications.fulfilled, (state, action) => {
       state.status = "succeeded";

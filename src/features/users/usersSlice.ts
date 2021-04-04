@@ -11,10 +11,13 @@ const usersAdapter = createEntityAdapter<Users_>();
 
 const initialState = usersAdapter.getInitialState();
 
-export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await client.get("/fakeApi/users");
-  return response.users;
-});
+export const fetchUsers = createAsyncThunk<Users_[]>(
+  "users/fetchUsers",
+  async () => {
+    const response = await client.get("/fakeApi/users");
+    return response.users;
+  }
+);
 
 const usersSlice = createSlice({
   name: "users",

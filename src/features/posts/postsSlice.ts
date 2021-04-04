@@ -8,7 +8,6 @@ import {
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 import {
-  Error,
   EmojiKeysNumber,
   Post,
   InitialStatePost,
@@ -37,18 +36,21 @@ const initialState = postAdapter.getInitialState({
 // export const selectPostById = (state: RootState, postId: string) =>
 //   state.posts.posts.find((post: Post) => post.id === postId);
 
-export const addNewPost = createAsyncThunk(
-  "posts/addPosts",
-  async (initialPost: Pick<Post, "title" | "content" | "user">) => {
-    const response = await client.post("/fakeApi/posts", { post: initialPost });
-    return response.post;
+export const addNewPost = createAsyncThunk<
+  Post,
+  Pick<Post, "title" | "content" | "user">
+>("posts/addPosts", async (initialPost) => {
+  const response = await client.post("/fakeApi/posts", { post: initialPost });
+  return response.post;
+});
+
+export const fetchPosts = createAsyncThunk<Post[]>(
+  "posts/fetchPosts",
+  async () => {
+    const response = await client.get("/fakeApi/posts");
+    return response.posts;
   }
 );
-
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await client.get("/fakeApi/posts");
-  return response.posts;
-});
 
 export const startingEmoji: EmojiKeysNumber = {
   thumbsUp: 0,
@@ -104,7 +106,7 @@ const postSlice = createSlice({
     });
     builder.addCase(fetchPosts.rejected, (state, action) => {
       state.status = "failed";
-      state.error = action.error.message as Error;
+      state.error = action.error.message ?? null;
     });
     builder.addCase(addNewPost.fulfilled, (state, action) => {
       // Add a single post to the posts
