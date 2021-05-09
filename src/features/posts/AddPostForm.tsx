@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { AppDispatch, useTypedSelector } from "../../app/store";
-import { Users_ } from "../../types/types";
+import { useAppDispatch, useTypedSelector } from "../../app/store";
+import { User } from "../../types/types";
 import { addNewPost } from "./postsSlice";
 import { selectAllUsers } from "../users/usersSlice";
 
@@ -13,7 +12,7 @@ export const AddPostForm = () => {
   const [userId, setUserId] = useState("");
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const users = useTypedSelector((state) => selectAllUsers(state));
   const onTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -45,7 +44,7 @@ export const AddPostForm = () => {
     }
   };
 
-  const usersOptions = users?.map((user: Users_) => (
+  const usersOptions = users?.map((user: User) => (
     <option key={user.id} value={user.id}>
       {user.name}
     </option>

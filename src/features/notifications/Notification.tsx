@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import classnames from "classnames";
 import { selectAllUsers } from "../users/usersSlice";
 import {
@@ -7,12 +7,12 @@ import {
   selectAllNotifications,
   allNotificationsRead,
 } from "./notificationsSlice";
-import { RootState } from "../../app/store";
-import { Notifications, Users_ } from "../../types/types";
+import { RootState, useAppDispatch } from "../../app/store";
+import { User } from "../../types/types";
 import { formatDistanceToNow, parseISO } from "date-fns";
 
 export const Notification = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const notifications = useSelector(selectAllNotifications);
   const users = useSelector(selectAllUsers);
   const notificationsStatus = useSelector(
@@ -38,13 +38,13 @@ export const Notification = () => {
   if (notificationsStatus === "loading") {
     content = <div className="loader">Loading...</div>;
   } else if (notificationsStatus === "succeeded") {
-    content = notifications?.map((notification: Notifications) => {
+    content = notifications?.map((notification) => {
       const message = notification.message;
       const id = notification.id;
       const date = parseISO(notification.date);
       const timeAgo = formatDistanceToNow(date);
       const user = users.find(
-        (user: Users_) => user.id === notification.user
+        (user: User) => user.id === notification.user
       ) || {
         name: "Unknown User",
       };

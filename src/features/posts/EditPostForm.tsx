@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../app/store";
 import { useHistory } from "react-router-dom";
 import { postUpdate, selectPostById } from "./postsSlice";
 import { MatchPropsPost } from "../../types/types";
@@ -10,7 +10,7 @@ export const EditPostForm = ({ match }: MatchPropsPost) => {
   const { postID } = match.params;
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const post = useSelector((state: RootState) => selectPostById(state, postID));
 

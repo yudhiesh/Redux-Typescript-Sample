@@ -5,13 +5,13 @@ import {
 } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
-import { Users_ } from "../../types/types";
+import { User } from "../../types/types";
 
-const usersAdapter = createEntityAdapter<Users_>();
+const usersAdapter = createEntityAdapter<User>();
 
 const initialState = usersAdapter.getInitialState();
 
-export const fetchUsers = createAsyncThunk<Users_[]>(
+export const fetchUsers = createAsyncThunk<User[]>(
   "users/fetchUsers",
   async () => {
     const response = await client.get("/fakeApi/users");

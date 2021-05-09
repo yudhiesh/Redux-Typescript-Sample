@@ -1,19 +1,19 @@
 import {
-  createSlice,
-  createAsyncThunk,
-  createEntityAdapter,
+    createAsyncThunk,
+    createEntityAdapter, createSlice
 } from "@reduxjs/toolkit";
 import { client } from "../../api/client";
 import { RootState } from "../../app/store";
 import {
-  Notifications,
-  InitialStateNotification,
-  Error,
+    InitialStateNotification, Notification
 } from "../../types/types";
 
-const notificationsAdapter = createEntityAdapter<Notifications>({
+const notificationsAdapter = createEntityAdapter<Notification>({
   sortComparer: (a, b) => b.date.localeCompare(a.date),
 });
+
+
+const hello = () =>;
 
 const initialState = notificationsAdapter.getInitialState({
   status: "idle",
@@ -21,7 +21,7 @@ const initialState = notificationsAdapter.getInitialState({
 } as InitialStateNotification);
 
 export const fetchNotifications = createAsyncThunk<
-  Notifications[],
+  Notification[],
   void,
   { state: RootState }
 >("notifications/fetchNotifications", async (_, { getState }) => {

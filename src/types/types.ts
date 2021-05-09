@@ -1,7 +1,7 @@
 import { EntityId } from "@reduxjs/toolkit";
 import { RouteComponentProps } from "react-router-dom";
 
-export interface Notifications {
+export interface Notification {
   id: string;
   date: string;
   message: string;
@@ -10,7 +10,7 @@ export interface Notifications {
   isNew: boolean;
 }
 
-export interface Users_ {
+export interface User {
   id: string;
   firstName: string;
   lastName: string;
@@ -32,7 +32,7 @@ export type Status = "idle" | "loading" | "succeeded" | "failed";
 export type Error = string | null;
 
 export interface InitialStateNotification {
-  notifications: Notifications[];
+  notifications: Notification[];
   status: Status;
   error: Error;
 }

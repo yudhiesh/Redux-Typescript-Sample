@@ -12,14 +12,15 @@ import { EditPostForm } from "./features/posts/EditPostForm";
 import { Users } from "./features/users/Users";
 import { User } from "./features/users/User";
 import { Notification } from "./features/notifications/Notification";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   fetchNotifications,
   selectAllNotifications,
 } from "./features/notifications/notificationsSlice";
+import { useAppDispatch } from "./app/store";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const notifications = useSelector(selectAllNotifications);
   const unreadNotifications = notifications.filter(
     (notification) => !notification.read
