@@ -87,12 +87,22 @@ const postSlice = createSlice({
         };
       },
     },
-    reactionAdd(state, action: PayloadAction<ReactionAdd>) {
-      const { id, reaction } = action.payload;
-      const existingPost = state.entities[id];
-      if (existingPost) {
-        existingPost.reactions[reaction]++;
-      }
+    reactionAdd: {
+      reducer(state, action: PayloadAction<ReactionAdd>) {
+        const { id, reaction } = action.payload;
+        const existingPost = state.entities[id];
+        if (existingPost) {
+          existingPost.reactions[reaction]++;
+        }
+      },
+      prepare(id, reaction) {
+        return {
+          payload: {
+            id,
+            reaction,
+          },
+        };
+      },
     },
   },
   extraReducers: (builder) => {
